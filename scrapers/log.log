@@ -1,0 +1,100 @@
+2020-08-06 14:05:48 [scrapy.utils.log] INFO: Scrapy 2.1.0 started (bot: scrapers)
+2020-08-06 14:05:48 [scrapy.utils.log] INFO: Versions: lxml 4.5.2.0, libxml2 2.9.10, cssselect 1.1.0, parsel 1.6.0, w3lib 1.22.0, Twisted 20.3.0, Python 3.8.2 (default, Jul 16 2020, 14:00:26) - [GCC 9.3.0], pyOpenSSL 19.1.0 (OpenSSL 1.1.1g  21 Apr 2020), cryptography 3.0, Platform Linux-5.4.0-42-generic-x86_64-with-glibc2.29
+2020-08-06 14:05:48 [scrapy.utils.log] DEBUG: Using reactor: twisted.internet.epollreactor.EPollReactor
+2020-08-06 14:05:48 [scrapy.crawler] INFO: Overridden settings:
+{'BOT_NAME': 'scrapers',
+ 'COOKIES_DEBUG': True,
+ 'NEWSPIDER_MODULE': 'scrapers.spiders',
+ 'SPIDER_MODULES': ['scrapers.spiders']}
+2020-08-06 14:05:48 [scrapy.extensions.telnet] INFO: Telnet Password: 82190d8ac783cce9
+2020-08-06 14:05:48 [scrapy.middleware] INFO: Enabled extensions:
+['scrapy.extensions.corestats.CoreStats',
+ 'scrapy.extensions.telnet.TelnetConsole',
+ 'scrapy.extensions.memusage.MemoryUsage',
+ 'scrapy.extensions.feedexport.FeedExporter',
+ 'scrapy.extensions.logstats.LogStats']
+2020-08-06 14:05:48 [scrapy.middleware] INFO: Enabled downloader middlewares:
+['scrapy.downloadermiddlewares.httpauth.HttpAuthMiddleware',
+ 'scrapy.downloadermiddlewares.downloadtimeout.DownloadTimeoutMiddleware',
+ 'scrapy.downloadermiddlewares.defaultheaders.DefaultHeadersMiddleware',
+ 'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware',
+ 'scrapy.downloadermiddlewares.retry.RetryMiddleware',
+ 'scrapy.downloadermiddlewares.redirect.MetaRefreshMiddleware',
+ 'scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware',
+ 'scrapy.downloadermiddlewares.redirect.RedirectMiddleware',
+ 'scrapy.downloadermiddlewares.cookies.CookiesMiddleware',
+ 'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware',
+ 'scrapy.downloadermiddlewares.stats.DownloaderStats']
+2020-08-06 14:05:48 [scrapy.middleware] INFO: Enabled spider middlewares:
+['scrapy.spidermiddlewares.httperror.HttpErrorMiddleware',
+ 'scrapy.spidermiddlewares.offsite.OffsiteMiddleware',
+ 'scrapers.middlewares.ScrapersSpiderMiddleware',
+ 'scrapy.spidermiddlewares.referer.RefererMiddleware',
+ 'scrapy.downloadermiddlewares.cookies.CookiesMiddleware',
+ 'scrapy.spidermiddlewares.urllength.UrlLengthMiddleware',
+ 'scrapy.spidermiddlewares.depth.DepthMiddleware']
+2020-08-06 14:05:48 [scrapy.middleware] INFO: Enabled item pipelines:
+['scrapers.pipelines.StoragePipeline']
+2020-08-06 14:05:48 [scrapy.core.engine] INFO: Spider opened
+2020-08-06 14:05:48 [scrapy.extensions.logstats] INFO: Crawled 0 pages (at 0 pages/min), scraped 0 items (at 0 items/min)
+2020-08-06 14:05:48 [ca_walmart] INFO: Spider opened: ca_walmart
+2020-08-06 14:05:48 [scrapy.extensions.telnet] INFO: Telnet console listening on 127.0.0.1:6023
+2020-08-06 14:05:56 [scrapy.crawler] INFO: Received SIGINT, shutting down gracefully. Send again to force 
+2020-08-06 14:05:56 [scrapy.core.engine] INFO: Closing spider (shutdown)
+2020-08-06 14:05:56 [scrapy.downloadermiddlewares.cookies] DEBUG: Received cookies from: <200 https://www.walmart.ca/en/grocery/fruits-vegetables/fruits/N-3852>
+Set-Cookie: walmart.shippingPostalCode=P7B3Z7; Max-Age=31540000; Expires=Fri, 06 Aug 2021 20:12:35 GMT; Path=/
+
+Set-Cookie: defaultNearestStoreId=3124; Max-Age=31540000; Expires=Fri, 06 Aug 2021 20:12:35 GMT; Path=/
+
+Set-Cookie: originalHttpReferer=; Max-Age=900; Expires=Thu, 06 Aug 2020 19:20:55 GMT; Path=/
+
+Set-Cookie: localStoreInfo=eyJsb2NhbFN0b3JlSWQiOiIzMTI0Iiwic2VsZWN0ZWRTdG9yZUlkIjoiMzEyNCIsInBvc3RhbENvZGUiOiJQN0IzWjciLCJzZWxlY3RlZFN0b3JlTmFtZSI6IlRodW5kZXIgQmF5IFN1cGVyY2VudHJlIiwiZnVsZmlsbG1lbnRTdG9yZUlkIjoiMzEyNCIsImZ1bGZpbGxtZW50VHlwZSI6IklOU1RPUkVfUElDS1VQIn0=; Max-Age=5184000; Expires=Mon, 05 Oct 2020 19:05:55 GMT; Path=/
+
+Set-Cookie: walmart.preferredstore=3124; Max-Age=31540000; Expires=Fri, 06 Aug 2021 20:12:35 GMT; Path=/
+
+Set-Cookie: zone=9; Max-Age=5184000; Expires=Mon, 05 Oct 2020 19:05:55 GMT; Path=/
+
+Set-Cookie: deliveryCatchment=3124; Max-Age=5184000; Expires=Mon, 05 Oct 2020 19:05:55 GMT; Path=/
+
+Set-Cookie: walmart.csrf=bdae9aea0787f4e8f5af895a; SameSite=Lax; Path=/
+
+Set-Cookie: ENV=ak-cdc-prod; Path=/; Secure; Domain=.walmart.ca; max-age=1200
+
+Set-Cookie: wmt.c=0; Path=/; Domain=.walmart.ca; max-age=604800
+
+Set-Cookie: vtc=YxC7xwdW3KVYAaqLgLDdoU;Path=/;Domain=.walmart.ca;Expires=Wed, 07 Aug 2030 07:05:55 GMT;Max-Age=315576000
+
+Set-Cookie: seqnum=1;Path=/;Domain=.walmart.ca;Expires=Wed, 07 Aug 2030 07:05:55 GMT;Max-Age=315576000
+
+Set-Cookie: bstc=YxC7xwdW3KVYAaqLgLDdoU;Path=/;Domain=.walmart.ca;Expires=Thu, 06 Aug 2020 19:35:55 GMT;Max-Age=1800
+
+Set-Cookie: seqnum=1;Path=/;Domain=.walmart.ca;Expires=Thu, 06 Aug 2020 19:35:55 GMT;Max-Age=1800
+
+Set-Cookie: TS01f4281b=01c5a4e2f95c83f57fef194dd649c729c9f7143aba9087f1c5ed54040b3035132a913754600a158fb25af694fa89269fe78997da53; Path=/; Secure
+
+Set-Cookie: TS011fb5f6=01c5a4e2f95c83f57fef194dd649c729c9f7143aba9087f1c5ed54040b3035132a913754600a158fb25af694fa89269fe78997da53; path=/; domain=.walmart.ca; Secure
+
+Set-Cookie: userSegment=40-percent; expires=Sat, 05-Sep-2020 19:05:55 GMT; path=/; domain=.www.walmart.ca
+
+2020-08-06 14:05:56 [scrapy.core.engine] DEBUG: Crawled (200) <GET https://www.walmart.ca/en/grocery/fruits-vegetables/fruits/N-3852> (referer: None)
+2020-08-06 14:05:56 [scrapy.statscollectors] INFO: Dumping Scrapy stats:
+{'downloader/request_bytes': 256,
+ 'downloader/request_count': 1,
+ 'downloader/request_method_count/GET': 1,
+ 'downloader/response_bytes': 6245,
+ 'downloader/response_count': 1,
+ 'downloader/response_status_count/200': 1,
+ 'elapsed_time_seconds': 8.642319,
+ 'finish_reason': 'shutdown',
+ 'finish_time': datetime.datetime(2020, 8, 6, 19, 5, 56, 789923),
+ 'log_count/DEBUG': 2,
+ 'log_count/INFO': 12,
+ 'memusage/max': 63070208,
+ 'memusage/startup': 63070208,
+ 'response_received_count': 1,
+ 'scheduler/dequeued': 1,
+ 'scheduler/dequeued/memory': 1,
+ 'scheduler/enqueued': 1,
+ 'scheduler/enqueued/memory': 1,
+ 'start_time': datetime.datetime(2020, 8, 6, 19, 5, 48, 147604)}
+2020-08-06 14:05:56 [scrapy.core.engine] INFO: Spider closed (shutdown)
