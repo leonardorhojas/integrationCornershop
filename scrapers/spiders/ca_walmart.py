@@ -129,18 +129,11 @@ class CaWalmartSpider(scrapy.Spider):
         if isFruit =="FRUITS":
             category =  response.xpath('//a[@class="css-wkrwfv elkyjhv0"]/text()').get()
             ProductItems['category'] = category.replace(",","|")
-
-            productSummary = response.xpath('//div[@class="css-w8lmum e1cuz6d11"]/div[@class="css-nivl4j e1cuz6d13"]/text()').getall()
-            print('*'*10)
-            print(productSummary)
-
-            ProductItems['brand'] = productSummary[2]
-            ProductItems['sku'] = productSummary[4]
-            ProductItems['barcodes'] = productSummary[5]
+            ProductItems['brand'] = response.xpath('//script').re(re.compile(r'\"brand\":\{\"name\"\:\"(.*?)\"\}', re.MULTILINE | re.DOTALL))[0]
+            ProductItems['sku'] = response.xpath('//script').re(re.compile(r'\"activeSkuId\":\"(.*?)\"', re.MULTILINE | re.DOTALL))[0]
+            ProductItems['barcodes'] = response.xpath('//script').re(re.compile(r'\"upc\":(\[.*?\])', re.MULTILINE | re.DOTALL))[0]
             ProductItems['name'] = response.xpath('//h1[@class="css-1c6krh5 e1yn5b3f6"]/text()').get()
             ProductItems['description'] = response.xpath('//div[@data-automation="long-description"]/text()').get()
-
-
 
             ProductItems['package'] = response.xpath('//p[@data-automation="short-description"]/text()').get()
             ProductItems['store'] = 'Walmart'
