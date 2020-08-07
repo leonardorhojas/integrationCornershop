@@ -8,7 +8,8 @@ from scrapers.items import ProductItem
 
 
 
-# //div[@class="css-w8lmum e1cuz6d11"]/div[@class="css-nivl4j e1cuz6d13"]/text()  //: ["Product Type", "Storage Type", "Brand", "Walmart Item #", "SKU", "UPC"]
+# //div[@class="css-w8lmum e1cuz6d11"]/div[@class="css-nivl4j e1cuz6d13"]/text()
+#  //: [    "Product Type", "Storage Type", "Brand", "Walmart Item #", "SKU", "UPC"]
 
 
 
@@ -16,6 +17,7 @@ class CaWalmartSpider(scrapy.Spider):
     name = "ca_walmart"
     allowed_domains = ["walmart.ca"]
     start_urls = ["https://www.walmart.ca/en/grocery/fruits-vegetables/fruits/N-3852"]
+    root_url = "https://www.walmart.ca"
     
     headers = {
         'dnt': '1',
@@ -103,12 +105,37 @@ class CaWalmartSpider(scrapy.Spider):
 
   
     def parse(self, response):
-        #pages = response.css('.page-select-list a::text').getall()
+        # parse pages setting the cookies / get products of the first age
+        products = response.xpath('//a[@class="product-link"]/@href').getall()
+
         next_page_button_link = response.xpath('//a[@analytics-data="next results page"]/@href').get()
         if next_page_button_link:
             next_page_button_link = response.urljoin(next_page_button_link)
-            print('*'*20)
-            print(next_page_button_link)
-            yield scrapy.Request(url=next_page_button_link, headers=self.headers, cookies=self.cookies, callback=self.parse)
+            yield scrapy.Request(url=next_page_button_link, headers=self.headers, cookies=self.cookies, callback=self.page_parse, cb_kwargs={'products': products})
 
+    def page_parse(self, response, **kwargs):
+    # get urls for products of other pages
+        if kwargs:
+            products = kwargs['products']
+        products.extend(response.xpath('//a[@class="product-link"]/@href').getall())
+        for product in products:
+            product_url = self.root_url + product
+            yield scrapy.Request(url=product_url, headers=self.headers, cookies=self.cookies, callback=self.product_parse)
 
+    def product_parse(self, response):
+        ProductItem = ProductItem()
+
+        description = response.xpath('//div[@class="css-w8lmum e1cuz6d11"]/div[@class="css-nivl4j e1cuz6d13"]/text()').get()
+        ProductItem['name'] = response.xpath('//h1[@class="css-1c6krh5 e1yn5b3f6"]/text()').get()
+        ProductItem['category'] = response.xpath('//li[@data-automation="desktop-breadcrumb-item-3"]/a[@class="css-wkrwfv elkyjhv0"]/text()').get()
+        ProductItem['description'] = response.xpath('//div[@data-automation="long-description"]/text()').get()
+        ProductItem['brand'] = description[2]
+        ProductItem['store'] = 'Walmart'
+        ProductItem['url'] = response.url
+        ProductItem['sku'] = description[4]
+        ProductItem['package'] = response.xpath('//p[@data-automation="short-description"]/text()').get()
+        ProductItem['barcodes'] = description[5]
+        ProductItem['image_url'] = response.xpath('//div[@role="presentation"]/img/@src').get()
+        ProductItem['price'] = response.xpath('//span[@data-automation="buybox-price"]/text()').get()
+        ProductItem['stock'] = 'TBD'
+        ProductItem['branch'] = 'ThunderBay Supercenter'
