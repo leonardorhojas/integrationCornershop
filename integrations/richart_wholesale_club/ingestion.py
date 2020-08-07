@@ -54,7 +54,8 @@ def process_csv_files():
     }, inplace=True)
 
 
-	products_df['store'] =r 'Richart Wholesale Wlub'
+	products_df['store'] = 'Richart Wholesale Wlub'
+
 
 
 
