@@ -6,8 +6,6 @@ from scrapers.items import ProductItem
 
 
 
-
-
 # //div[@class="css-w8lmum e1cuz6d11"]/div[@class="css-nivl4j e1cuz6d13"]/text()
 #  //: [    "Product Type", "Storage Type", "Brand", "Walmart Item #", "SKU", "UPC"]
 
@@ -123,19 +121,43 @@ class CaWalmartSpider(scrapy.Spider):
             yield scrapy.Request(url=product_url, headers=self.headers, cookies=self.cookies, callback=self.product_parse)
 
     def product_parse(self, response):
-        ProductItem = ProductItem()
+    # Scraping Data from Productpages
 
-        description = response.xpath('//div[@class="css-w8lmum e1cuz6d11"]/div[@class="css-nivl4j e1cuz6d13"]/text()').get()
-        ProductItem['name'] = response.xpath('//h1[@class="css-1c6krh5 e1yn5b3f6"]/text()').get()
-        ProductItem['category'] = response.xpath('//li[@data-automation="desktop-breadcrumb-item-3"]/a[@class="css-wkrwfv elkyjhv0"]/text()').get()
-        ProductItem['description'] = response.xpath('//div[@data-automation="long-description"]/text()').get()
-        ProductItem['brand'] = description[2]
-        ProductItem['store'] = 'Walmart'
-        ProductItem['url'] = response.url
-        ProductItem['sku'] = description[4]
-        ProductItem['package'] = response.xpath('//p[@data-automation="short-description"]/text()').get()
-        ProductItem['barcodes'] = description[5]
-        ProductItem['image_url'] = response.xpath('//div[@role="presentation"]/img/@src').get()
-        ProductItem['price'] = response.xpath('//span[@data-automation="buybox-price"]/text()').get()
-        ProductItem['stock'] = 'TBD'
-        ProductItem['branch'] = 'ThunderBay Supercenter'
+        ProductItems = ProductItem()
+
+        isFruit = response.xpath('//li[@data-automation="desktop-breadcrumb-item-3"]/a[@class="css-wkrwfv elkyjhv0"]/text()').get().upper()
+        if isFruit =="FRUITS":
+            category =  response.xpath('//a[@class="css-wkrwfv elkyjhv0"]/text()').get()
+            ProductItems['category'] = category.replace(",","|")
+
+            productSummary = response.xpath('//div[@class="css-w8lmum e1cuz6d11"]/div[@class="css-nivl4j e1cuz6d13"]/text()').getall()
+            print('*'*10)
+            print(productSummary)
+
+            ProductItems['brand'] = productSummary[2]
+            ProductItems['sku'] = productSummary[4]
+            ProductItems['barcodes'] = productSummary[5]
+            ProductItems['name'] = response.xpath('//h1[@class="css-1c6krh5 e1yn5b3f6"]/text()').get()
+            ProductItems['description'] = response.xpath('//div[@data-automation="long-description"]/text()').get()
+
+
+
+            ProductItems['package'] = response.xpath('//p[@data-automation="short-description"]/text()').get()
+            ProductItems['store'] = 'Walmart'
+            ProductItems['url'] = response.url
+            ProductItems['image_url'] = response.xpath('//div[@role="presentation"]/img/@src').get()
+
+            ProductItems['price'] = response.xpath('//span[@data-automation="buybox-price"]/text()').get()
+            ProductItems['stock'] = 'TBD'
+            ProductItems['branch'] = 'ThunderBay Supercenter'
+        else:
+            pass
+
+        ProductItemToronto = copy.copy(ProductItems)
+
+        API_CONNECTION = http.client.HTTPSConnection(self.root_url.replace('https://',''))
+
+        
+
+
+
