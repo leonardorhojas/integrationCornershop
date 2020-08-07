@@ -131,7 +131,8 @@ class CaWalmartSpider(scrapy.Spider):
             ProductItems['category'] = category.replace(",","|")
             ProductItems['brand'] = response.xpath('//script').re(re.compile(r'\"brand\":\{\"name\"\:\"(.*?)\"\}', re.MULTILINE | re.DOTALL))[0]
             ProductItems['sku'] = response.xpath('//script').re(re.compile(r'\"activeSkuId\":\"(.*?)\"', re.MULTILINE | re.DOTALL))[0]
-            ProductItems['barcodes'] = response.xpath('//script').re(re.compile(r'\"upc\":(\[.*?\])', re.MULTILINE | re.DOTALL))[0]
+            barcodes = response.xpath('//script').re(re.compile(r'\"upc\":(\[.*?\])', re.MULTILINE | re.DOTALL))[0]
+            ProductItems['barcodes'] = barcodes[0]
             ProductItems['name'] = response.xpath('//h1[@class="css-1c6krh5 e1yn5b3f6"]/text()').get()
             ProductItems['description'] = response.xpath('//div[@data-automation="long-description"]/text()').get()
 
@@ -141,16 +142,34 @@ class CaWalmartSpider(scrapy.Spider):
             ProductItems['image_url'] = response.xpath('//div[@role="presentation"]/img/@src').get()
 
             ProductItems['price'] = response.xpath('//span[@data-automation="buybox-price"]/text()').get()
-            ProductItems['stock'] = 'TBD'
-            ProductItems['branch'] = 'ThunderBay Supercenter'
+           # ProductItems['stock'] = 'TBD'
+           # ProductItems['branch'] = 'ThunderBay Supercenter'
+
+
+            ProductItemsToronto = copy.copy(ProductItems)
+
+            API_CONNECTION = http.client.HTTPSConnection(self.root_url.replace('https://',''))
+
+             # thunder bay store
+            store_uri = '/api/product-page/find-in-store?latitude=43.6560592651&longitude=-79.434173584&lang=en&upc='
+            ProductItems = self.get_branch_info(3106, store_uri, ProductItems, API_CONNECTION, response)
+            yield ProductItems
+
+            # toronto store
+            store_uri = '/api/product-page/find-in-store?latitude=48.4114837646&longitude=-89.2452468872&lang=en&upc='
+            ProductItemsToronto = self.get_branch_info(3124, store_uri, ProductItemsToronto, API_CONNECTION, response)
+            yield ProductItemsToronto
         else:
             pass
 
-        ProductItemToronto = copy.copy(ProductItems)
 
-        API_CONNECTION = http.client.HTTPSConnection(self.root_url.replace('https://',''))
-
-        
-
-
-
+    def get_branch_info(self, store_id, store_uri, ProductItems, API_CONNECTION, response):
+        url = store_uri + ProductItems['barcodes']
+        API_CONNECTION.request('GET', url)
+        store = json.loads(API_CONNECTION.getresponse().read().decode('utf-8'))
+        for detail in store['info']:
+            if detail['id'] == store_id:
+                detail['stock'] = elem['availableToSellQty']
+                detail['branch'] = str(store_id)
+                break
+        return ProductItems
